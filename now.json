@@ -6,7 +6,7 @@
   "builds": [{ "src": "src/routes/*.js", "use": "@now/node-server" }],
   "github": { "silent": true },
   "routes": [
-    { "src": "/api/webhook/line", "dest": "/src/routes/line.js"},
+    { "src": "/api/webhook/line", "dest": "/src/routes/line.js" },
     { "src": "/api/webhook/slack", "dest": "/src/routes/slack.js" }
   ],
   "env": {

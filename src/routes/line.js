@@ -3,7 +3,8 @@ const axios = require('axios');
 const middleware = require('@line/bot-sdk').middleware;
 const Client = require('@line/bot-sdk').Client;
 const JSONParseError = require('@line/bot-sdk').JSONParseError;
-const SignatureValidationFailed = require('@line/bot-sdk').SignatureValidationFailed;
+const SignatureValidationFailed = require('@line/bot-sdk')
+  .SignatureValidationFailed;
 
 const app = express();
 const config = {
@@ -24,15 +25,18 @@ app.post('*', async (req, res) => {
       return;
     }
 
-    const profile = await client.getGroupMemberProfile(event.source.groupId, event.source.userId);
+    const profile = await client.getGroupMemberProfile(
+      event.source.groupId,
+      event.source.userId
+    );
 
     await axios.post(process.env.SLACK_WEBHOOK_URL, {
-      "attachments": [
+      attachments: [
         {
-          "color": "#36a64f",
-          "author_name": profile.displayName,
-          "author_icon": profile.pictureUrl,
-          "text": event.message.text
+          color: '#36a64f',
+          author_name: profile.displayName,
+          author_icon: profile.pictureUrl,
+          text: event.message.text
         }
       ]
     });
@@ -44,10 +48,10 @@ app.post('*', async (req, res) => {
 app.use((err, req, res, next) => {
   if (err instanceof SignatureValidationFailed) {
     res.status(401).send(err.signature);
-    return
+    return;
   } else if (err instanceof JSONParseError) {
     res.status(400).send(err.raw);
-    return
+    return;
   }
   next(err);
 });

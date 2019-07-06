@@ -1,7 +1,7 @@
 const Client = require('@line/bot-sdk').Client;
 const axios = require('axios');
 const express = require('express');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
 const app = express();
 const client = new Client({
@@ -11,7 +11,11 @@ const client = new Client({
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.post('*', async (req, res) => {
-  if (!req.body || req.body.token !== process.env.SLACK_TOKEN || !req.body.text) {
+  if (
+    !req.body ||
+    req.body.token !== process.env.SLACK_TOKEN ||
+    !req.body.text
+  ) {
     res.status(403).end('ERROR');
     return;
   }
@@ -20,15 +24,15 @@ app.post('*', async (req, res) => {
 
   await client.pushMessage(process.env.LINE_GROUP_ID, {
     type: 'text',
-    text: text
+    text
   });
 
   await axios.post(process.env.SLACK_WEBHOOK_URL, {
-    "attachments": [
+    attachments: [
       {
-        "color": "#36a64f",
-        "author_name": req.body.user_name,
-        "text": text
+        color: '#36a64f',
+        author_name: req.body.user_name,
+        text
       }
     ]
   });
