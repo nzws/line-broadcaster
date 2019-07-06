@@ -1,7 +1,8 @@
-# template-nodejs
+# line-broadcaster
 
-A project template for Node.js built in eslint, prettier and editorconfig.
-
-# How to use
-
-Click `Use this template`.
+## now secret
+- `SLACK_TOKEN`
+- `SLACK_WEBHOOK_URL`
+- `LINE_ACCESS_TOKEN`
+- `LINE_SECRET`
+- `LINE_GROUP_ID`

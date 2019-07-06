@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "line-broadcaster",
+  "regions": ["hnd1"],
+  "public": false,
+  "builds": [{ "src": "src/routes/*.js", "use": "@now/node-server" }],
+  "github": { "silent": true },
+  "routes": [
+    { "src": "/api/webhook/line", "dest": "/src/routes/line.js"},
+    { "src": "/api/webhook/slack", "dest": "/src/routes/slack.js" }
+  ],
+  "env": {
+    "SLACK_TOKEN": "@slack_token",
+    "SLACK_WEBHOOK_URL": "@slack_webhook_url",
+    "LINE_ACCESS_TOKEN": "@line_access_token",
+    "LINE_SECRET": "@line_secret",
+    "LINE_GROUP_ID": "@line_group_id"
+  }
+}
