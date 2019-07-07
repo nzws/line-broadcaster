@@ -18,28 +18,28 @@ app.use(middleware(config));
 app.post('*', async (req, res) => {
   for (let event of req.body.events) {
     if (
-      event.type !== 'message' ||
-      event.source.groupId !== process.env.LINE_GROUP_ID ||
-      event.message.type !== 'text'
+      !(
+        event.type !== 'message' ||
+        event.source.groupId !== process.env.LINE_GROUP_ID ||
+        event.message.type !== 'text'
+      )
     ) {
-      return;
+      const profile = await client.getGroupMemberProfile(
+        event.source.groupId,
+        event.source.userId
+      );
+
+      await axios.post(process.env.SLACK_WEBHOOK_URL, {
+        attachments: [
+          {
+            color: '#36a64f',
+            author_name: profile.displayName,
+            author_icon: profile.pictureUrl,
+            text: event.message.text
+          }
+        ]
+      });
     }
-
-    const profile = await client.getGroupMemberProfile(
-      event.source.groupId,
-      event.source.userId
-    );
-
-    await axios.post(process.env.SLACK_WEBHOOK_URL, {
-      attachments: [
-        {
-          color: '#36a64f',
-          author_name: profile.displayName,
-          author_icon: profile.pictureUrl,
-          text: event.message.text
-        }
-      ]
-    });
   }
 
   res.end();
